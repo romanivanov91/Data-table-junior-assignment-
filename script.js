@@ -239,55 +239,20 @@ formSearch.addEventListener('submit', (e) => {
             pageNumArr = [];//Удаляем страницы из массива
         }
         conteinerUser.style.transform = 'translateX(0px)';//Перемещаемся на первую страницу таблицы
-        //Подготавливаем отфильтрованные массивы по каждому столбцу
-        const arrObjFilter1 = arrObj.filter(el => el.id == inputValue.value);
-        const arrObjFilter2 = arrObj.filter(el => el.firstName == inputValue.value);
-        const arrObjFilter3 = arrObj.filter(el => el.lastName == inputValue.value);
-        const arrObjFilter4 = arrObj.filter(el => el.email == inputValue.value);
-        const arrObjFilter5 = arrObj.filter(el => el.phone == inputValue.value);
-        
-        let arrObjFilter;//Массив куда записываюся отфильтрованные данные
+        //Массив куда записываюся отфильтрованные данные
+        let arrObjFilter= arrObj.filter(el => (el.id == inputValue.value)||(el.firstName == inputValue.value)||(el.lastName == inputValue.value)||(el.email == inputValue.value)||(el.phone == inputValue.value));
         //Условия вывода данных в таблицу из отфильтрованного массива
-        if (arrObjFilter1.length >= 1) {
-            arrObjFilter = arrObj.filter(el => el.id == inputValue.value);
+        if (arrObjFilter.length >= 1) {
             writingStringTable(arrObjFilter);//Записываем строки в таблицу
             //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
             if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
                     writingPageNum();
             }
-        } else if (arrObjFilter2.length >= 1) {
-            arrObjFilter = arrObj.filter(el => el.firstName == inputValue.value);
-            writingStringTable(arrObjFilter);//Записываем строки в таблицу
-            //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
-            if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
-                writingPageNum();
-            }
-        }else if (arrObjFilter3.length >= 1) {
-            arrObjFilter = arrObj.filter(el => el.lastName == inputValue.value);
-            writingStringTable(arrObjFilter);//Записываем строки в таблицу
-            //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
-            if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
-                 writingPageNum();
-            }
-        }else if (arrObjFilter4.length >= 1) {
-            arrObjFilter = arrObj.filter(el => el.email == inputValue.value);
-            writingStringTable(arrObjFilter);//Записываем строки в таблицу
-            //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
-            if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
-                writingPageNum();
-            }
-        }else if (arrObjFilter5.length >= 1) {
-            arrObjFilter = arrObj.filter(el => el.phone == inputValue.value);
-            writingStringTable(arrObjFilter);//Записываем строки в таблицу
-            //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
-            if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
-                writingPageNum();
-            }
         } else {
             alert('Ничего не найдено!');
             inputValue.value = '';//Удалеем текст из поля ввода
             writingStringTable(arrObj);//Записываем заново строки в таблицу
-             //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
+            //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
             if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
             writingPageNum();
             }
