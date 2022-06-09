@@ -25,7 +25,7 @@ class DataTable {
                         <div>email▲</div>
                         <div>phone▲</div>`;
         //Добавлем заголовкам с помощью цикла класс из CSS 
-        const headingDiv = document.querySelectorAll('.headings div');
+        const headingDiv = tableBody.querySelectorAll('.headings div');
         headingDiv.forEach(el => {
             el.classList.add('heading');
         });
@@ -71,7 +71,7 @@ class DataTable {
 
         //функция вывода нумерации страниц, если строки таблицы не помещаются в таблицу
         function writingPageNum() {
-            let pageNum = (conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth); //количество страниц
+            let pageNum = (conteinerUser.scrollWidth)/(tableBody.querySelector('.cells').offsetWidth); //количество страниц
             const indicator = document.createElement('div');//Добавляем контейнер для точек переключения
             tableBody.append(indicator);//Добавляем индикатор в тело страницы
             indicator.classList.add('num');//Присваиваем ему класс num из CSS
@@ -88,15 +88,13 @@ class DataTable {
                 indicator.append(num);//Добавляем div кнопки в контейнер для точек переключения
                 pageNumArr.push(num);//Добавляем в массив кнопку, что бы потом его перебрать и навесить на каждую кнопку обработчик событий
             }
-            console.log(pageNumArr);//Проверяем что записалось в pageNumArr
-
             //Перебираем pageNumArr, навешивая на каждую кнопку обработчик событий
             pageNumArr.forEach(num => {
                 num.addEventListener('click', (e) => {
                     console.log('Сработал');//Проверяем сработку нажатия на кнопку
                     const slideTo = e.target.getAttribute('data-slide-to');//Обращаемся к слайду с определенным атрибутом, то есть рузультат будет от 1 до сколько всего страниц
                     console.log(slideTo);//Проверил в консоли
-                    offset = (document.querySelector('.cells').offsetWidth) * (slideTo-1);//Определем отступ на который перемещается слайд умножая ширину одной строки таблицы на номер страницы - 1
+                    offset = (tableBody.querySelector('.cells').offsetWidth) * (slideTo-1);//Определем отступ на который перемещается слайд умножая ширину одной строки таблицы на номер страницы - 1
                     conteinerUser.style.transform = `translateX(-${offset}px)`;//Перемещаемся до слайда
                     pageNumArr.forEach(num => num.style.opacity = '.5');//Все точки прозрачные
                     pageNumArr[slideTo-1].style.opacity = 1;//Активная точка
@@ -140,7 +138,7 @@ class DataTable {
         });
 
         //Функция сортировки
-        const heading = document.querySelectorAll('.heading');
+        const heading = tableBody.querySelectorAll('.heading');
         console.log(heading[0].textContent);
         function sortHeading (indexHeading, valueHeading, objKey) {
 
@@ -161,12 +159,12 @@ class DataTable {
                     });
             
                     //Зачищаем предыдущий вариант сортировку в таблице
-                    document.querySelectorAll('.cells').forEach(el => {
+                    tableBody.querySelectorAll('.cells').forEach(el => {
                         el.remove();
                     });
                     //Удаляем нумерацию страниц
-                    if (document.querySelector('.num')) {
-                        document.querySelector('.num').remove();//Удаляем страницы из DOM дерева
+                    if (tableBody.querySelector('.num')) {
+                        tableBody.querySelector('.num').remove();//Удаляем страницы из DOM дерева
                         pageNumArr = [];//Удаляем страницы из массива
                     }
             
@@ -191,13 +189,13 @@ class DataTable {
                     });
             
                     //Зачищаем предыдущий вариант сортировку в таблице
-                    document.querySelectorAll('.cells').forEach(el => {
+                    tableBody.querySelectorAll('.cells').forEach(el => {
                         el.remove();
                         
                     });
                     //Удаляем нумерацию страниц
-                    if (document.querySelector('.num')) {
-                        document.querySelector('.num').remove();//Удаляем страницы из DOM дерева
+                    if (tableBody.querySelector('.num')) {
+                        tableBody.querySelector('.num').remove();//Удаляем страницы из DOM дерева
                         pageNumArr = [];//Удаляем страницы из массива
                     }
             
@@ -243,18 +241,18 @@ class DataTable {
         forms.append(formAdd);
         forms.append(formAddUser);
         tableBody.prepend(forms);//Добавлем форму в тело страницы
-        const inputValue = document.querySelector('.input_val'); //Поле ввода из формы
+        const inputValue = tableBody.querySelector('.input_val'); //Поле ввода из формы
 
         //Поиск
         formSearch.addEventListener('submit', (e) => {
             e.preventDefault();
             //Зачищаем предыдущий вариант сортировки в таблице
-            document.querySelectorAll('.cells').forEach(el => {
+            tableBody.querySelectorAll('.cells').forEach(el => {
                 el.remove();
             });
             //Удаляем нумерацию страниц
-            if (document.querySelector('.num')) {
-                document.querySelector('.num').remove();//Удаляем страницы из DOM дерева
+            if (tableBody.querySelector('.num')) {
+                tableBody.querySelector('.num').remove();//Удаляем страницы из DOM дерева
                 pageNumArr = [];//Удаляем страницы из массива
                 }
             conteinerUser.style.transform = 'translateX(0px)';//Перемещаемся на первую страницу таблицы
@@ -265,7 +263,7 @@ class DataTable {
             if (arrObjFilter.length >= 1) {
                 writingStringTable(arrObjFilter);//Записываем строки в таблицу
                 //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
-                if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
+                if (((conteinerUser.scrollWidth)/(tableBody.querySelector('.cells').offsetWidth)) > 1) {
                     writingPageNum();
                 }
             } else {
@@ -273,7 +271,7 @@ class DataTable {
                 inputValue.value = '';//Удалеем текст из поля ввода
                 writingStringTable(arrObj);//Записываем заново строки в таблицу
                 //Условие при котором если ширина conteinerUser больше ширины строки добавляются цифры переключения страницы
-                if (((conteinerUser.scrollWidth)/(document.querySelector('.cells').offsetWidth)) > 1) {
+                if (((conteinerUser.scrollWidth)/(tableBody.querySelector('.cells').offsetWidth)) > 1) {
                 writingPageNum();
                 }
             }
@@ -284,12 +282,12 @@ class DataTable {
         formRezet.addEventListener('submit', (e) => {
             e.preventDefault();
             //Зачищаем предыдущий вариант сортировки в таблице
-            document.querySelectorAll('.cells').forEach(el => {
+            tableBody.querySelectorAll('.cells').forEach(el => {
                 el.remove();
             });
             //Удаляем нумерацию страниц
-            if (document.querySelector('.num')) {
-                document.querySelector('.num').remove();//Удаляем страницы из DOM дерева
+            if (tableBody.querySelector('.num')) {
+                tableBody.querySelector('.num').remove();//Удаляем страницы из DOM дерева
                 pageNumArr = [];//Удаляем страницы из массива
             }
             inputValue.value = '';//Удалеем текст из поля ввода
@@ -354,17 +352,17 @@ class DataTable {
             formAddUser.style.display = 'block';
         });
 
-            const inputId = document.querySelector('.input_id');
-            const inputFirstname = document.querySelector('.input_firstName');
-            const inputLastname = document.querySelector('.input_lastName');
-            const inputEmail = document.querySelector('.input_email');
-            const inputPhone = document.querySelector('.input_phone');
+            const inputId = tableBody.querySelector('.input_id');
+            const inputFirstname = tableBody.querySelector('.input_firstName');
+            const inputLastname = tableBody.querySelector('.input_lastName');
+            const inputEmail = tableBody.querySelector('.input_email');
+            const inputPhone = tableBody.querySelector('.input_phone');
 
         formAddUser.addEventListener('mouseout', () => {
             if (inputId.value=='' || inputFirstname.value=='' || inputLastname.value=='' || inputEmail.value=="" || inputPhone.value=="") {
-                document.querySelector('.input_user').disabled = true;
+                tableBody.querySelector('.input_user').disabled = true;
             } else {
-                document.querySelector('.input_user').disabled = false;
+                tableBody.querySelector('.input_user').disabled = false;
             }
         });
             
@@ -378,12 +376,12 @@ class DataTable {
             obj.phone = inputPhone.value;
             arrObj.unshift(obj);
             //Зачищаем предыдущий вариант сортировку в таблице
-            document.querySelectorAll('.cells').forEach(el => {
+            tableBody.querySelectorAll('.cells').forEach(el => {
                 el.remove();
             });
             //Удаляем нумерацию страниц
-            if (document.querySelector('.num')) {
-                document.querySelector('.num').remove();//Удаляем страницы из DOM дерева
+            if (tableBody.querySelector('.num')) {
+                tableBody.querySelector('.num').remove();//Удаляем страницы из DOM дерева
                 pageNumArr = [];//Удаляем страницы из массива
             }
             conteinerUser.style.transform = 'translateX(0px)';//Перемещаемся на первую страницу таблицы
@@ -402,5 +400,6 @@ class DataTable {
             }
 }
 
-const dataTableBig = new DataTable('http://www.filltext.com/?rows=1000&id=%7Bnumber%7C1000%7D&firstName=%7BfirstName%7D&delay=3&lastName=%7BlastName%7D&email=%7Bemail%7D&phone=%7Bphone%7C(xxx)xxx-xx-xx%7D&address=%7BaddressObject%7D&description=%7Blorem%7C32%7D').render();
 const dataTableSmall = new DataTable('http://www.filltext.com/?rows=32&id=%7Bnumber%7C1000%7D&firstName=%7BfirstName%7D&lastName=%7BlastName%7D&email=%7Bemail%7D&phone=%7Bphone%7C(xxx)xxx-xx-xx%7D&address=%7BaddressObject%7D&description=%7Blorem%7C32%7D').render();
+
+const dataTableBig = new DataTable('http://www.filltext.com/?rows=1000&id=%7Bnumber%7C1000%7D&firstName=%7BfirstName%7D&delay=3&lastName=%7BlastName%7D&email=%7Bemail%7D&phone=%7Bphone%7C(xxx)xxx-xx-xx%7D&address=%7BaddressObject%7D&description=%7Blorem%7C32%7D').render();
